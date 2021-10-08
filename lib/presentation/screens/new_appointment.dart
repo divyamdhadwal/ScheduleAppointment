@@ -199,9 +199,12 @@ class _NewAppointmentState extends State<NewAppointment> {
                       PaddingWrapper(
                         myWidget: getClientsWidget(),
                       ),
-                      PaddingWrapper(
-                        myWidget: Divider(),
-                        pad: 5.0,
+                      Container(
+                        child:
+                            Divider(color: Colors.blue.shade50, thickness: 1.4),
+                        padding: EdgeInsets.all(5),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                       ),
                       PaddingWrapper(
                         myWidget: Row(
@@ -267,8 +270,14 @@ class _NewAppointmentState extends State<NewAppointment> {
                   itemBuilder: (context, itemPosition) {
                     Client client = snapshot.data![itemPosition];
                     return ListTile(
-                      title: Text(client.firstName),
-                      trailing: Text(client.location),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        client.firstName,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      trailing: Text(client.location,
+                          style: TextStyle(
+                              fontSize: 12, color: Colors.blue.shade400)),
                     );
                   }),
             )
