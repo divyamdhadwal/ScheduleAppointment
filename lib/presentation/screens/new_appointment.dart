@@ -264,6 +264,8 @@ class _NewAppointmentState extends State<NewAppointment> {
     if (snapshot.hasData) {
       return snapshot.data!.length != 0
           ? Container(
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
               height: 100,
               child: ListView.builder(
                   itemCount: snapshot.data!.length,
@@ -271,6 +273,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                     Client client = snapshot.data![itemPosition];
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0.0,
                       title: Text(
                         client.firstName,
                         style: TextStyle(fontSize: 14),
