@@ -9,12 +9,12 @@ final clientTABLE = 'ClientDetails';
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
 
-  late Database _database;
+  Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
-    _database = await createDatabase();
-    return _database;
+    if(_database == null)
+      _database = await createDatabase();
+    return _database!;
   }
 
   createDatabase() async {
@@ -33,7 +33,7 @@ class DatabaseProvider {
         "whatsappNo VARCHAR, "
         "email VARCHAR PRIMARY KEY, "
         "location VARCHAR, "
-        "projectName VARCHAR, "
+        "projectName VARCHAR "
         ")");
   }
 }

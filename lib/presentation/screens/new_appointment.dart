@@ -260,15 +260,18 @@ class _NewAppointmentState extends State<NewAppointment> {
   Widget getEachClientWidget(AsyncSnapshot<List<Client>> snapshot) {
     if (snapshot.hasData) {
       return snapshot.data!.length != 0
-          ? ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, itemPosition) {
-                Client client = snapshot.data![itemPosition];
-                return ListTile(
-                  title: Text(client.firstName),
-                  trailing: Text(client.location),
-                );
-              })
+          ? Container(
+              height: 100,
+              child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, itemPosition) {
+                    Client client = snapshot.data![itemPosition];
+                    return ListTile(
+                      title: Text(client.firstName),
+                      trailing: Text(client.location),
+                    );
+                  }),
+            )
           : Text('Nothing to show here');
     } else {
       return Center(
