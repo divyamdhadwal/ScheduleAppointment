@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../constants/app_style.dart';
+
 class TextFieldDesign extends StatelessWidget {
   final Widget? formWidget;
   final double widgetMargin;
@@ -9,9 +11,9 @@ class TextFieldDesign extends StatelessWidget {
   const TextFieldDesign({
     Key? key,
     this.formWidget,
-    this.widgetMargin = 15.0,
-    this.verticalPadding = 10,
-    this.horizontalPadding = 18,
+    this.widgetMargin = AppStyle.avgPadding,
+    this.verticalPadding = AppStyle.tfdVerticalPad,
+    this.horizontalPadding = AppStyle.tfdHorizontalPad,
   }) : super(key: key);
 
   @override
@@ -21,13 +23,15 @@ class TextFieldDesign extends StatelessWidget {
       style: NeumorphicStyle(
         shadowLightColor: Colors.white,
         shadowDarkColor: Colors.black,
-        color: Color.fromRGBO(235, 244, 247, 1),
+        color: AppStyle.backgroundColor,
         shape: NeumorphicShape.concave,
         depth: -3,
-        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(5)),
+        boxShape: NeumorphicBoxShape.roundRect(
+            BorderRadius.circular(AppStyle.lessRadius)),
         lightSource: LightSource.topLeft,
       ),
-      padding: EdgeInsets.symmetric(vertical: verticalPadding, horizontal: horizontalPadding),
+      padding: EdgeInsets.symmetric(
+          vertical: verticalPadding, horizontal: horizontalPadding),
       child: formWidget,
     );
   }

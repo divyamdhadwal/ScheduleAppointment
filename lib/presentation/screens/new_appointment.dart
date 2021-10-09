@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../constants/app_text.dart';
+import '../../constants/app_style.dart';
 import '../../business_logic/cubits/cubit/appointmenttype_cubit.dart';
 import '../../data/models/appointment.dart';
 import '../widgets/custom_field_change.dart';
@@ -63,14 +65,14 @@ class _NewAppointmentState extends State<NewAppointment> {
         builder: (context) {
           return Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding: EdgeInsets.all(20),
+            insetPadding: EdgeInsets.all(AppStyle.extraPadding),
             child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.85,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color.fromRGBO(235, 244, 247, 1)),
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    borderRadius: BorderRadius.circular(AppStyle.lessRadius),
+                    color: AppStyle.backgroundColor),
+                padding: AppStyle.extraLTRBPadding,
                 child: Form(
                   key: _newClientformKey,
                   child: SingleChildScrollView(
@@ -78,58 +80,60 @@ class _NewAppointmentState extends State<NewAppointment> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         PaddingWrapper(
-                          pad: 10,
+                          pad: AppStyle.lessPadding,
                           myWidget: Text(
-                            'Add a New Client',
+                            AppText.newClientFormTitle,
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: AppStyle.h4Font,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               myController: _firstName,
-                              hintText: 'First Name',
+                              hintText: AppText.fNameHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               myController: _lastName,
-                              hintText: 'Last Name',
+                              hintText: AppText.lNameHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.phone,
                               myController: _whatsappNo,
-                              hintText: 'Whatsapp No',
+                              hintText: AppText.whatsappNoHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.emailAddress,
                               myController: _email,
-                              hintText: 'Email',
+                              hintText: AppText.emailHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.streetAddress,
                               myController: _location,
-                              hintText: 'Location',
+                              hintText: AppText.locationHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: 5.0,
+                            widgetMargin: AppStyle.vLessMargin,
                             formWidget: CustomTextFormField(
                               completeAction: TextInputAction.done,
                               myController: _projectName,
-                              hintText: 'Project Name',
+                              hintText: AppText.pNameHelperText,
                             )),
                         CustomButton(
                             child: Text(
-                              'Save',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                              AppText.addClientButtonText,
+                              style: TextStyle(
+                                  color: AppStyle.textOverButtonColor,
+                                  fontSize: AppStyle.h4Font),
                             ),
                             gradient: LinearGradient(
                               colors: <Color>[
@@ -221,7 +225,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                   },
                 ),
                 Card(
-                  margin: EdgeInsets.all(15),
+                  margin: EdgeInsets.all(AppStyle.vLargeMargin),
                   elevation: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +235,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                           formWidget: CustomFieldChange(
                             onChangedEvent: _searchResults,
                             myController: _clientName,
-                            hintText: 'Client Name',
+                            hintText: AppText.cltNameHelperText,
                           )),
                       PaddingWrapper(
                         myWidget: getClientsWidget(),
@@ -239,7 +243,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                       Container(
                         child:
                             Divider(color: Colors.blue.shade50, thickness: 1.4),
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(AppStyle.vLessPadding),
                         margin:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                       ),
@@ -252,12 +256,12 @@ class _NewAppointmentState extends State<NewAppointment> {
                                 Icon(
                                   Icons.add_circle,
                                   color: Colors.orange.shade900,
-                                  size: 24,
+                                  size: AppStyle.h6Font,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Text(
-                                    'New Client',
+                                    AppText.newClientText,
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
@@ -271,8 +275,10 @@ class _NewAppointmentState extends State<NewAppointment> {
                 BasicTimeField(myController: _time),
                 CustomButton(
                     child: Text(
-                      'Schedule',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      AppText.addAppointmentBtnText,
+                      style: TextStyle(
+                          color: AppStyle.textOverButtonColor,
+                          fontSize: AppStyle.h4Font),
                     ),
                     gradient: LinearGradient(
                       colors: <Color>[
@@ -286,7 +292,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                           clientName: _clientName.value.text,
                           date: _date.value.text == ""
                               ? DateTime.now()
-                              : DateFormat("yyyy-MM-dd")
+                              : DateFormat(AppText.dtFormat)
                                   .parse(_date.value.text),
                           time: _time.value.text == ""
                               ? DateTime.now()
@@ -328,17 +334,17 @@ class _NewAppointmentState extends State<NewAppointment> {
                       horizontalTitleGap: 0.0,
                       title: Text(
                         client.firstName,
-                        style: TextStyle(fontSize: 14),
+                        style: TextStyle(fontSize: AppStyle.h3Font),
                       ),
                       trailing: Text(client.location,
                           style: TextStyle(
-                              fontSize: 12, color: Colors.blue.shade400)),
+                              fontSize: AppStyle.h2Font, color: Colors.blue.shade400)),
                     );
                   }),
             )
-          : Text('No Clients Found. Start by adding a new one',
+          : Text(AppText.noDataFoundTxt,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: AppStyle.h1Font,
                 color: Colors.grey,
               ));
     } else {
@@ -358,7 +364,7 @@ class _NewAppointmentState extends State<NewAppointment> {
             CircularProgressIndicator(
               strokeWidth: 1,
             ),
-            Text("Loading...", style: TextStyle(fontSize: 10))
+            Text(AppText.loadingText, style: TextStyle(fontSize: AppStyle.h1Font))
           ],
         ),
       ),

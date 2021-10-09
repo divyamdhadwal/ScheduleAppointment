@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
+import '../../constants/app_text.dart';
 import 'text_field_design.dart';
 
 class BasicTimeField extends StatelessWidget {
   final TextEditingController myController;
-  final format = DateFormat("HH:mm");
+  final format = DateFormat(AppText.tFormat);
   BasicTimeField({required this.myController});
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class BasicTimeField extends StatelessWidget {
         formWidget: DateTimeField(
       controller: myController,
       decoration: InputDecoration(
-        labelText: 'Pick a Time',
+        labelText: AppText.tLabelText,
         border: InputBorder.none,
         suffixIcon: Icon(Icons.access_time_outlined),
       ),

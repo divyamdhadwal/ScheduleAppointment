@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/app_style.dart';
+
 class CustomButton extends StatelessWidget {
   final Widget child;
   final Gradient? gradient;
@@ -12,22 +14,22 @@ class CustomButton extends StatelessWidget {
     required this.child,
     this.gradient,
     this.width = double.infinity,
-    this.height = 60.0,
+    this.height = AppStyle.buttonHeight,
     required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(15.0),
+      margin: EdgeInsets.all(AppStyle.avgPadding),
       width: width,
-      height: 60.0,
+      height: height,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppStyle.defRadius),
           gradient: gradient,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
+              color: AppStyle.btShadowColor,
               offset: Offset(0.0, 1.5),
               blurRadius: 1.5,
             ),
