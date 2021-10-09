@@ -11,7 +11,8 @@ class ClientProvider {
     return result;
   }
 
-  Future<List<Client>> getClients({List<String>? columns, String? query}) async {
+  Future<List<Client>> getClients(
+      {List<String>? columns, String? query}) async {
     final db = await dbProvider.database;
     List<Map<String, dynamic>>? result;
     if (query != null) {
@@ -24,9 +25,13 @@ class ClientProvider {
       result = await db.query(clientTABLE, columns: columns);
     }
 
-    List<Client> clients = result!.isNotEmpty
-        ? result.map((item) => Client.fromDatabaseJson(item)).toList()
-        : [];
-    return clients;
+    if (result != null) {
+      List<Client> clients = result.isNotEmpty
+          ? result.map((item) => Client.fromDatabaseJson(item)).toList()
+          : [];
+      return clients;
+    } else {
+      return [];
+    }
   }
 }

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:new_appointment/business_logic/cubits/cubit/appointmenttype_cubit.dart';
+import 'package:new_appointment/data/models/appointment.dart';
+import 'package:new_appointment/presentation/widgets/custom_field_change.dart';
 
 import '../../business_logic/blocs/client_bloc.dart';
 import '../widgets/basic_date_field.dart';
@@ -143,10 +148,14 @@ class _NewAppointmentState extends State<NewAppointment> {
                                   newClient.location.isNotEmpty &&
                                   newClient.projectName.isNotEmpty &&
                                   newClient.location.isNotEmpty) {
-                                clientBloc.addClient(newClient);
+                                try {
+                                  clientBloc.addClient(newClient);
+                                  print("Added");
+                                } catch (error) {
+                                  throw error;
+                                }
                               }
                               Navigator.pop(context);
-                              print('Added');
                             }),
                       ],
                     ),
@@ -154,6 +163,14 @@ class _NewAppointmentState extends State<NewAppointment> {
                 )),
           );
         });
+  }
+
+  void _searchResults(res) {
+    if (res.length >= 1) {
+      clientBloc.getClients(query: res);
+    } else {
+      clientBloc.getClients();
+    }
   }
 
   @override
@@ -179,11 +196,27 @@ class _NewAppointmentState extends State<NewAppointment> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                TextFieldDesign(
-                    formWidget: CustomTextFormField(
-                  myController: _appointmentType,
-                  hintText: 'Site Visit',
-                )),
+                BlocBuilder<AppointmenttypeCubit, AppointmentTypeState>(
+                  builder: (context, state) {
+                    return TextFieldDesign(
+                        formWidget: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          onChanged: (newField) =>
+                              BlocProvider.of<AppointmenttypeCubit>(context)
+                                  .changeCurrValue(newField),
+                          isExpanded: true,
+                          value: state.currValue,
+                          icon: Icon(Icons.keyboard_arrow_down),
+                          items: state.types
+                              .map<DropdownMenuItem<String>>((String eachType) {
+                            return DropdownMenuItem<String>(
+                              child: Text(eachType),
+                              value: eachType,
+                            );
+                          }).toList()),
+                    ));
+                  },
+                ),
                 Card(
                   margin: EdgeInsets.all(15),
                   elevation: 3,
@@ -192,7 +225,8 @@ class _NewAppointmentState extends State<NewAppointment> {
                     children: [
                       TextFieldDesign(
                           widgetMargin: 0.0,
-                          formWidget: CustomTextFormField(
+                          formWidget: CustomFieldChange(
+                            onChangedEvent: _searchResults,
                             myController: _clientName,
                             hintText: 'Client Name',
                           )),
@@ -244,7 +278,22 @@ class _NewAppointmentState extends State<NewAppointment> {
                       ],
                     ),
                     onPressed: () {
-                      print('Scheduled');
+                      final newAppt = Appointment(
+                          appointmentType: _appointmentType.value.text,
+                          clientName: _clientName.value.text,
+                          date: _date.value.text == ""
+                              ? DateTime.now()
+                              : DateFormat("yyyy-MM-dd")
+                                  .parse(_date.value.text),
+                          time: _time.value.text == ""
+                              ? DateTime.now()
+                              : DateFormat.Hm().parse(_time.value.text));
+                      if (newAppt.appointmentType.isNotEmpty &&
+                          newAppt.appointmentType.isNotEmpty &&
+                          newAppt.appointmentType.isNotEmpty &&
+                          newAppt.appointmentType.isNotEmpty) {
+                        print("Scheduled");
+                      }
                     }),
               ],
             ),
@@ -284,7 +333,7 @@ class _NewAppointmentState extends State<NewAppointment> {
                     );
                   }),
             )
-          : Text('Nothing to show here');
+          : Text('Start by adding a new client');
     } else {
       return Center(
         child: loadingData(),
