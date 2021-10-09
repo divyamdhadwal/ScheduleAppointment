@@ -17,7 +17,6 @@ class ClientBloc {
   }
 
   addClient(Client client) async {
-    print('Inside AddClient');
     await _clientRepository.addClient(client);
     getClients();
   }

@@ -11,7 +11,6 @@ class Appointment {
       required this.time});
 
   factory Appointment.fromDatabaseJson(Map<String, dynamic> data) => Appointment(
-    // !Factory method converts JSON obj coming from querying db to Client object
         appointmentType: data['appointmentType'],
         clientName: data['clientName'],
         date: data['date'],
@@ -19,8 +18,6 @@ class Appointment {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-    // !This method will be used to convert Client objects that
-    // !are to be stored into the datbase in a form of JSON
         "appointmentType": this.appointmentType,
         "clientName": this.clientName,
         "date": this.date,

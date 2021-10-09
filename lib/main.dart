@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:new_appointment/business_logic/cubits/cubit/appointmenttype_cubit.dart';
 
+import 'business_logic/cubits/cubit/appointmenttype_cubit.dart';
 import 'presentation/screens/new_appointment.dart';
 
 void main() {

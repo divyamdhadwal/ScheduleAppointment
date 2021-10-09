@@ -15,7 +15,6 @@ class Client {
       required this.projectName});
 
   factory Client.fromDatabaseJson(Map<String, dynamic> data) => Client(
-    // !Factory method converts JSON obj coming from querying db to Client object
         firstName: data['firstName'],
         lastName: data['lastName'],
         whatsappNo: data['whatsappNo'],
@@ -25,8 +24,6 @@ class Client {
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-    // !This method will be used to convert Client objects that
-    // !are to be stored into the datbase in a form of JSON
         "firstName": this.firstName,
         "lastName": this.lastName,
         "whatsappNo": this.whatsappNo,

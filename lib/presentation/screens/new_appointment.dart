@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:new_appointment/business_logic/cubits/cubit/appointmenttype_cubit.dart';
-import 'package:new_appointment/data/models/appointment.dart';
-import 'package:new_appointment/presentation/widgets/custom_field_change.dart';
 
+import '../../business_logic/cubits/cubit/appointmenttype_cubit.dart';
+import '../../data/models/appointment.dart';
+import '../widgets/custom_field_change.dart';
 import '../../business_logic/blocs/client_bloc.dart';
 import '../widgets/basic_date_field.dart';
 import '../widgets/basic_time_field.dart';
@@ -101,24 +100,28 @@ class _NewAppointmentState extends State<NewAppointment> {
                         TextFieldDesign(
                             widgetMargin: 5.0,
                             formWidget: CustomTextFormField(
+                              keyType: TextInputType.phone,
                               myController: _whatsappNo,
                               hintText: 'Whatsapp No',
                             )),
                         TextFieldDesign(
                             widgetMargin: 5.0,
                             formWidget: CustomTextFormField(
+                              keyType: TextInputType.emailAddress,
                               myController: _email,
                               hintText: 'Email',
                             )),
                         TextFieldDesign(
                             widgetMargin: 5.0,
                             formWidget: CustomTextFormField(
+                              keyType: TextInputType.streetAddress,
                               myController: _location,
                               hintText: 'Location',
                             )),
                         TextFieldDesign(
                             widgetMargin: 5.0,
                             formWidget: CustomTextFormField(
+                              completeAction: TextInputAction.done,
                               myController: _projectName,
                               hintText: 'Project Name',
                             )),
@@ -241,25 +244,25 @@ class _NewAppointmentState extends State<NewAppointment> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                       ),
                       PaddingWrapper(
-                        myWidget: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.add_circle,
-                                color: Colors.orange.shade900,
-                                size: 24,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: InkWell(
-                                  onTap: () => newClientForm(context),
+                        myWidget: InkWell(
+                          onTap: () => newClientForm(context),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.add_circle,
+                                  color: Colors.orange.shade900,
+                                  size: 24,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
                                   child: Text(
                                     'New Client',
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
-                              )
-                            ]),
+                              ]),
+                        ),
                       )
                     ],
                   ),
@@ -333,7 +336,11 @@ class _NewAppointmentState extends State<NewAppointment> {
                     );
                   }),
             )
-          : Text('Start by adding a new client');
+          : Text('No Clients Found. Start by adding a new one',
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey,
+              ));
     } else {
       return Center(
         child: loadingData(),
@@ -342,7 +349,6 @@ class _NewAppointmentState extends State<NewAppointment> {
   }
 
   Widget loadingData() {
-    //pull todos again
     clientBloc.getClients();
     return Container(
       child: Center(

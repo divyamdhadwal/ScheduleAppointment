@@ -5,7 +5,10 @@ class CustomFieldChange extends StatelessWidget {
   final Function onChangedEvent;
   final String hintText;
   const CustomFieldChange(
-      {Key? key, required this.myController,required this.hintText,required this.onChangedEvent })
+      {Key? key,
+      required this.myController,
+      required this.hintText,
+      required this.onChangedEvent})
       : super(key: key);
 
   @override
