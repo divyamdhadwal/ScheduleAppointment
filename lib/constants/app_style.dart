@@ -15,6 +15,7 @@ class AppStyle {
 
   /* Margins */
   static const vLessMargin = 5.0;
+  static const avgMargin = 5.0;
   static const vLargeMargin = 15.0;
 
   /* Common border values */

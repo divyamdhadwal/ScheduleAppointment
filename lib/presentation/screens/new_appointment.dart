@@ -28,7 +28,6 @@ class NewAppointment extends StatefulWidget {
 
 class _NewAppointmentState extends State<NewAppointment> {
   final ClientBloc clientBloc = ClientBloc();
-  final _appointmentType = TextEditingController();
   final _clientName = TextEditingController();
   final _date = TextEditingController();
   final _time = TextEditingController();
@@ -45,7 +44,6 @@ class _NewAppointmentState extends State<NewAppointment> {
 
   @override
   void dispose() {
-    _appointmentType.dispose();
     _clientName.dispose();
     _date.dispose();
     _time.dispose();
@@ -89,40 +87,40 @@ class _NewAppointmentState extends State<NewAppointment> {
                           ),
                         ),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               myController: _firstName,
                               hintText: AppText.fNameHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               myController: _lastName,
                               hintText: AppText.lNameHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.phone,
                               myController: _whatsappNo,
                               hintText: AppText.whatsappNoHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.emailAddress,
                               myController: _email,
                               hintText: AppText.emailHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               keyType: TextInputType.streetAddress,
                               myController: _location,
                               hintText: AppText.locationHelperText,
                             )),
                         TextFieldDesign(
-                            widgetMargin: AppStyle.vLessMargin,
+                            widgetMargin: AppStyle.avgMargin,
                             formWidget: CustomTextFormField(
                               completeAction: TextInputAction.done,
                               myController: _projectName,
@@ -160,6 +158,13 @@ class _NewAppointmentState extends State<NewAppointment> {
                                   print("Added");
                                 } catch (error) {
                                   throw error;
+                                } finally {
+                                  _firstName.clear();
+                                  _lastName.clear();
+                                  _whatsappNo.clear();
+                                  _email.clear();
+                                  _location.clear();
+                                  _projectName.clear();
                                 }
                               }
                               Navigator.pop(context);
@@ -273,37 +278,45 @@ class _NewAppointmentState extends State<NewAppointment> {
                 ),
                 BasicDateField(myController: _date),
                 BasicTimeField(myController: _time),
-                CustomButton(
-                    child: Text(
-                      AppText.addAppointmentBtnText,
-                      style: TextStyle(
-                          color: AppStyle.textOverButtonColor,
-                          fontSize: AppStyle.h4Font),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Colors.orange.shade900,
-                        Colors.orange.shade600
-                      ],
-                    ),
-                    onPressed: () {
-                      final newAppt = Appointment(
-                          appointmentType: _appointmentType.value.text,
-                          clientName: _clientName.value.text,
-                          date: _date.value.text == ""
-                              ? DateTime.now()
-                              : DateFormat(AppText.dtFormat)
-                                  .parse(_date.value.text),
-                          time: _time.value.text == ""
-                              ? DateTime.now()
-                              : DateFormat.Hm().parse(_time.value.text));
-                      if (newAppt.appointmentType.isNotEmpty &&
-                          newAppt.appointmentType.isNotEmpty &&
-                          newAppt.appointmentType.isNotEmpty &&
-                          newAppt.appointmentType.isNotEmpty) {
-                        print("Scheduled");
-                      }
-                    }),
+                BlocBuilder<AppointmenttypeCubit, AppointmentTypeState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                        child: Text(
+                          AppText.addAppointmentBtnText,
+                          style: TextStyle(
+                              color: AppStyle.textOverButtonColor,
+                              fontSize: AppStyle.h4Font),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Colors.orange.shade900,
+                            Colors.orange.shade600
+                          ],
+                        ),
+                        onPressed: () {
+                          final newAppt = Appointment(
+                              appointmentType: state.currValue,
+                              clientName: _clientName.value.text,
+                              date: _date.value.text == ""
+                                  ? DateTime.now()
+                                  : DateFormat(AppText.dtFormat)
+                                      .parse(_date.value.text),
+                              time: _time.value.text == ""
+                                  ? DateTime.now()
+                                  : DateFormat.Hm().parse(_time.value.text));
+                          if (newAppt.appointmentType.isNotEmpty &&
+                              newAppt.appointmentType.isNotEmpty &&
+                              newAppt.appointmentType.isNotEmpty &&
+                              newAppt.appointmentType.isNotEmpty) {
+                            print("Scheduled");
+                            _clientName.clear();
+                            _date.clear();
+                            _time.clear();
+                            clientBloc.getClients();
+                          }
+                        });
+                  },
+                ),
               ],
             ),
           ),
@@ -338,7 +351,8 @@ class _NewAppointmentState extends State<NewAppointment> {
                       ),
                       trailing: Text(client.location,
                           style: TextStyle(
-                              fontSize: AppStyle.h2Font, color: Colors.blue.shade400)),
+                              fontSize: AppStyle.h2Font,
+                              color: Colors.blue.shade400)),
                     );
                   }),
             )
@@ -364,7 +378,8 @@ class _NewAppointmentState extends State<NewAppointment> {
             CircularProgressIndicator(
               strokeWidth: 1,
             ),
-            Text(AppText.loadingText, style: TextStyle(fontSize: AppStyle.h1Font))
+            Text(AppText.loadingText,
+                style: TextStyle(fontSize: AppStyle.h1Font))
           ],
         ),
       ),
