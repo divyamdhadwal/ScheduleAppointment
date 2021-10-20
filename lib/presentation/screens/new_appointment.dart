@@ -28,6 +28,7 @@ class NewAppointment extends StatefulWidget {
 
 class _NewAppointmentState extends State<NewAppointment> {
   final ClientBloc clientBloc = ClientBloc();
+  bool showResults = false;
   final _clientName = TextEditingController();
   final _date = TextEditingController();
   final _time = TextEditingController();
@@ -180,13 +181,26 @@ class _NewAppointmentState extends State<NewAppointment> {
   void _searchResults(res) {
     if (res.length >= 1) {
       clientBloc.getClients(query: res);
+      setState(() {
+        showResults = true;
+      });
     } else {
+      setState(() {
+        showResults = false;
+      });
       clientBloc.getClients();
     }
   }
 
+  void _setClient(name) {
+    setState(() {
+      _clientName.text = name;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    //print(_clientName.value.text);
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 0,
@@ -242,37 +256,40 @@ class _NewAppointmentState extends State<NewAppointment> {
                             myController: _clientName,
                             hintText: AppText.cltNameHelperText,
                           )),
-                      PaddingWrapper(
-                        myWidget: getClientsWidget(),
-                      ),
-                      Container(
-                        child:
-                            Divider(color: Colors.blue.shade50, thickness: 1.4),
-                        padding: EdgeInsets.all(AppStyle.vLessPadding),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                      ),
-                      PaddingWrapper(
-                        myWidget: InkWell(
-                          onTap: () => newClientForm(context),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(
-                                  Icons.add_circle,
-                                  color: Colors.orange.shade900,
-                                  size: AppStyle.h6Font,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Text(
-                                    AppText.newClientText,
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ]),
+                      if (showResults)
+                        PaddingWrapper(
+                          myWidget: getClientsWidget(),
                         ),
-                      )
+                      if (showResults)
+                        Container(
+                          child: Divider(
+                              color: Colors.blue.shade50, thickness: 1.4),
+                          padding: EdgeInsets.all(AppStyle.vLessPadding),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        ),
+                      if (showResults)
+                        PaddingWrapper(
+                          myWidget: InkWell(
+                            onTap: () => newClientForm(context),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.add_circle,
+                                    color: Colors.orange.shade900,
+                                    size: AppStyle.h6Font,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(
+                                      AppText.newClientText,
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        )
                     ],
                   ),
                 ),
@@ -342,17 +359,20 @@ class _NewAppointmentState extends State<NewAppointment> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, itemPosition) {
                     Client client = snapshot.data![itemPosition];
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      horizontalTitleGap: 0.0,
-                      title: Text(
-                        client.firstName,
-                        style: TextStyle(fontSize: AppStyle.h3Font),
+                    return InkWell(
+                      onTap: () => _setClient(client.firstName),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        horizontalTitleGap: 0.0,
+                        title: Text(
+                          client.firstName,
+                          style: TextStyle(fontSize: AppStyle.h3Font),
+                        ),
+                        trailing: Text(client.location,
+                            style: TextStyle(
+                                fontSize: AppStyle.h2Font,
+                                color: Colors.blue.shade400)),
                       ),
-                      trailing: Text(client.location,
-                          style: TextStyle(
-                              fontSize: AppStyle.h2Font,
-                              color: Colors.blue.shade400)),
                     );
                   }),
             )

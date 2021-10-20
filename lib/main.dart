@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:new_appointment/business_logic/cubits/cubit/formchange_cubit.dart';
 
 import 'constants/app_style.dart';
 import 'business_logic/cubits/cubit/appointmenttype_cubit.dart';
@@ -12,8 +13,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppointmenttypeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AppointmenttypeCubit>(
+          create: (BuildContext context) => AppointmenttypeCubit(),
+        ),
+        BlocProvider<FormchangeCubit>(
+            create: (BuildContext context) => FormchangeCubit())
+      ],
+      //create: (context) => AppointmenttypeCubit(),
       child: MaterialApp(
           title: 'New Appointment Screen',
           theme: ThemeData(
