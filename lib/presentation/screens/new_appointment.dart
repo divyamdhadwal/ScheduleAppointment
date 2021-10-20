@@ -29,6 +29,7 @@ class NewAppointment extends StatefulWidget {
 class _NewAppointmentState extends State<NewAppointment> {
   final ClientBloc clientBloc = ClientBloc();
   bool showResults = false;
+  bool customController = true;
   final _clientName = TextEditingController();
   final _date = TextEditingController();
   final _time = TextEditingController();
@@ -179,13 +180,15 @@ class _NewAppointmentState extends State<NewAppointment> {
   }
 
   void _searchResults(res) {
-    if (res.length >= 1) {
+    print(showResults);
+    if (res.length >= 1 && customController) {
       clientBloc.getClients(query: res);
       setState(() {
         showResults = true;
       });
     } else {
       setState(() {
+        customController = true;
         showResults = false;
       });
       clientBloc.getClients();
@@ -194,13 +197,14 @@ class _NewAppointmentState extends State<NewAppointment> {
 
   void _setClient(name) {
     setState(() {
+      showResults = false;
+      customController = false;
       _clientName.text = name;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    //print(_clientName.value.text);
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 0,
