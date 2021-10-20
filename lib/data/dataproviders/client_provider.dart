@@ -5,6 +5,7 @@ import '../models/client.dart';
 
 class ClientProvider {
   final dbProvider = DatabaseProvider.dbProvider;
+  
   Future<int> createClient(Client client) async {
     final db = await dbProvider.database;
     var result = db.insert(clientTABLE, client.toDatabaseJson());
